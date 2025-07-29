@@ -1,16 +1,27 @@
-const scriptURL = "https://script.google.com/macros/s/AKfycbz18VrmRMZgmFiukKbJveShsJdynNa9SeFpae_CgRur1_jIRwbDQGWQJ6uL9IJhbiLO/exec"; // Ganti dengan URL Web App GAS kamu
+async function mulaiGame() {
+  const id = document.getElementById('id').value.trim();
+  const kupon = document.getElementById('kupon').value.trim();
+  const pesan = document.getElementById('pesan');
+  
+  if (!id || !kupon) {
+    pesan.textContent = "ID dan Kupon wajib diisi.";
+    return;
+  }
 
-document.getElementById("form").addEventListener("submit", (e) => {
-  e.preventDefault();
-  const formData = new FormData(e.target);
-  const data = Object.fromEntries(formData.entries());
+  try {
+    const res = await fetch(`https://script.google.com/macros/s/AKfycbz18VrmRMZgmFiukKbJveShsJdynNa9SeFpae_CgRur1_jIRwbDQGWQJ6uL9IJhbiLO/exec?check=1&id=${encodeURIComponent(id)}&kupon=${encodeURIComponent(kupon)}`);
+    const data = await res.json();
 
-  fetch(scriptURL, {
-    method: "POST",
-    body: JSON.stringify(data),
-    headers: { "Content-Type": "application/json" }
-  })
-    .then(res => res.text())
-    .then(msg => alert(msg))
-    .catch(err => alert("Gagal: " + err));
-});
+    if (data.status === "valid") {
+      pesan.textContent = "Kupon valid! Menampilkan hadiah...";
+      // lanjutkan game, atau tampilkan animasi
+    } else if (data.status === "used") {
+      pesan.textContent = "Kupon sudah digunakan!";
+    } else {
+      pesan.textContent = "Kupon tidak valid!";
+    }
+  } catch (error) {
+    console.error(error);
+    pesan.textContent = "Terjadi kesalahan saat menghubungi server.";
+  }
+}

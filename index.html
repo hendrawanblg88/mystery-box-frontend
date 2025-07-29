@@ -1,18 +1,21 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mystery Box</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mystery Box ULTIMASLOT</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="script.js" defer></script>
 </head>
 <body>
-  <h1>Mystery Box</h1>
-  <form id="form">
-    <input type="text" name="nama" placeholder="Nama" required />
-    <input type="email" name="email" placeholder="Email" required />
-    <button type="submit">Submit</button>
-  </form>
+  <div class="container">
+    <img src="logo.png" class="logo" />
+    <h1>Mystery Box</h1>
+    <input type="text" id="id" placeholder="Masukkan ID Anda" />
+    <input type="text" id="kupon" placeholder="Masukkan Kode Kupon" />
+    <button onclick="mulaiGame()">Mulai Game</button>
+    <div id="pesan"></div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>

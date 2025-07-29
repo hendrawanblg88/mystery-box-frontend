@@ -1,13 +1,10 @@
-// Ganti URL berikut dengan URL Web App dari Google Apps Script kamu
-const API_URL = 'https://script.google.com/macros/s/AKfycbz18VrmRMZgmFiukKbJveShsJdynNa9SeFpae_CgRur1_jIRwbDQGWQJ6uL9IJhbiLO/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbyfWnx4Kv_X6LiUEt5E7ZTzVyliAuRKGulMDruPFq7WH70tbfJMvji8_r-QRWMQK1GJ/exec';
 
-// Ambil elemen input
 const idInput = document.getElementById('idInput');
 const kuponInput = document.getElementById('kuponInput');
 const tombolMulai = document.getElementById('btnMulai');
 const hasilDiv = document.getElementById('hasil');
 
-// Event listener saat tombol diklik
 tombolMulai.addEventListener('click', async () => {
   const id = idInput.value.trim();
   const kupon = kuponInput.value.trim();
@@ -32,13 +29,11 @@ tombolMulai.addEventListener('click', async () => {
     const result = await response.json();
 
     if (result.status === 'valid') {
-      // Tampilkan hadiah secara acak
-      const hadiahList =  [1000, 2000, 3000, 5000, 8000, 10000, 100000, 1000000, 10000000]; // 9 item
+      const hadiahList = ['Voucher 50rb', 'Pulsa 100rb', 'Saldo DANA 25rb', 'Voucher Belanja', 'ZONK 😅'];
       const hadiah = hadiahList[Math.floor(Math.random() * hadiahList.length)];
 
       hasilDiv.innerHTML = `🎉 Selamat! Kamu mendapatkan: <strong>${hadiah}</strong>`;
 
-      // Simpan hasil ke Google Sheets
       await fetch(API_URL, {
         method: 'POST',
         body: new URLSearchParams({
@@ -54,6 +49,6 @@ tombolMulai.addEventListener('click', async () => {
     }
   } catch (error) {
     console.error(error);
-    hasilDiv.innerHTML = 'Terjadi kesalahan saat menghubungi server.';
+    hasilDiv.innerHTML = '❗ Terjadi kesalahan saat menghubungi server.';
   }
 });

@@ -796,7 +796,7 @@
   const hadiahTerpilih = hadiahBawah10000[Math.floor(Math.random() * hadiahBawah10000.length)];
 
   box.classList.add('selected');
-  box.textContent = Rp ${hadiahTerpilih.toLocaleString()};
+  box.textContent = `Rp ${hadiahTerpilih.toLocaleString()}`;
   box.style.borderColor = '#ffd700';
 
   // Tampilkan popup hadiah
@@ -818,7 +818,7 @@
         tdNo.textContent = i + 1;
 
         const tdHadiah = document.createElement('td');
-        tdHadiah.textContent = Rp ${h.toLocaleString()};
+        tdHadiah.textContent = `Rp ${h.toLocaleString()}`;
         if (h === hadiahTerpilih) {
           tdHadiah.classList.add('selected-cell');
         }
@@ -841,7 +841,7 @@
       boxes.forEach(box => {
         if (!box.classList.contains('selected')) {
           box.classList.add('opened');
-          box.textContent = Rp ${parseInt(box.dataset.hadiah).toLocaleString()};
+          box.textContent = `Rp ${parseInt(box.dataset.hadiah).toLocaleString()}`;
           box.style.borderColor = 'rgba(255, 215, 0, 0.5)';
         }
       });

@@ -637,6 +637,21 @@ async function cekKupon(id, kupon) {
 cekKupon("A123", "ABC999");
 </script>
 
+    <!-- SCRIPT -->
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbx_3SH9blPz4v-wKqtHdFm5CWXJAagYLOHwNNl6IrvNNlCAJXNoemapHuk47Jr0RSbrzQ/exec";
+
+    async function verifikasi() {
+      const id = document.getElementById("id").value.trim();
+      const kupon = document.getElementById("kupon").value.trim();
+
+      const response = await fetch(`${API_URL}?id=${encodeURIComponent(id)}&kupon=${encodeURIComponent(kupon)}`);
+      const data = await response.json();
+
+      console.log(data); // tampilkan hasil respon
+    }
+  </script>
+
 <!-- Start of LiveChat (www.livechat.com) code -->
 <script>
     window.__lc = window.__lc || {};

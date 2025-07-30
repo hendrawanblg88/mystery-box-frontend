@@ -612,6 +612,31 @@
   </a>
 </div>
 
+  <script>
+const API_URL = "https://script.google.com/macros/s/AKfycbx_3SH9blPz4v-wKqtHdFm5CWXJAagYLOHwNNl6IrvNNlCAJXNoemapHuk47Jr0RSbrzQ/exec";
+
+async function cekKupon(id, kupon) {
+  try {
+    const response = await fetch(`${API_URL}?id=${encodeURIComponent(id)}&kupon=${encodeURIComponent(kupon)}`);
+    const result = await response.json();
+
+    if (result.status === "valid") {
+      console.log("✅ Kupon valid! Row:", result.row);
+      // Lanjutkan ke step buka box / animasi / simpan hasil
+    } else if (result.status === "used") {
+      console.log("⚠️ Kupon sudah digunakan.");
+    } else {
+      console.log("❌ Kupon tidak ditemukan.");
+    }
+  } catch (error) {
+    console.error("Terjadi kesalahan:", error);
+  }
+}
+
+// Contoh pemanggilan:
+cekKupon("A123", "ABC999");
+</script>
+
 <!-- Start of LiveChat (www.livechat.com) code -->
 <script>
     window.__lc = window.__lc || {};

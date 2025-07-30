@@ -814,15 +814,19 @@
 
   // Simpan hasil ke GAS
   fetch('https://script.google.com/macros/s/AKfycbx_3SH9blPz4v-wKqtHdFm5CWXJAagYLOHwNNl6IrvNNlCAJXNoemapHuk47Jr0RSbrzQ/exec', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      action: 'simpan',
-      row: rowIndex,
-      hadiah: hadiahTerpilih
-    })
-  });
-}
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    action: 'cek',
+    id: idValue,
+    kupon: kuponValue
+  })
+})
+.then(res => res.json())
+.then(data => {
+  if (data.status === 'valid') {
+    // lanjut ke game
+  }
 
     function buatPopup(hadiahTerpilih) {
       const popup = document.getElementById('popupOverlay');

@@ -807,26 +807,22 @@
   const hadiahTerpilih = hadiahBawah10000[Math.floor(Math.random() * hadiahBawah10000.length)];
 
   box.classList.add('selected');
-  box.textContent = `Rp ${hadiahTerpilih.toLocaleString()}`;
+  box.textContent = Rp ${hadiahTerpilih.toLocaleString()};
   box.style.borderColor = '#ffd700';
 
   buatPopup(hadiahTerpilih);
 
   // Simpan hasil ke GAS
   fetch('https://script.google.com/macros/s/AKfycbx_3SH9blPz4v-wKqtHdFm5CWXJAagYLOHwNNl6IrvNNlCAJXNoemapHuk47Jr0RSbrzQ/exec', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    action: 'cek',
-    id: idValue,
-    kupon: kuponValue
-  })
-})
-.then(res => res.json())
-.then(data => {
-  if (data.status === 'valid') {
-    // lanjut ke game
-  }
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      action: 'simpan',
+      row: rowIndex,
+      hadiah: hadiahTerpilih
+    })
+  });
+}
 
     function buatPopup(hadiahTerpilih) {
       const popup = document.getElementById('popupOverlay');
@@ -840,7 +836,7 @@
         tdNo.textContent = i + 1;
 
         const tdHadiah = document.createElement('td');
-        tdHadiah.textContent = `Rp ${h.toLocaleString()}`;
+        tdHadiah.textContent = Rp ${h.toLocaleString()};
         if (h === hadiahTerpilih) {
           tdHadiah.classList.add('selected-cell');
         }
@@ -863,7 +859,7 @@
       boxes.forEach(box => {
         if (!box.classList.contains('selected')) {
           box.classList.add('opened');
-          box.textContent = `Rp ${parseInt(box.dataset.hadiah).toLocaleString()}`;
+          box.textContent = Rp ${parseInt(box.dataset.hadiah).toLocaleString()};
           box.style.borderColor = 'rgba(255, 215, 0, 0.5)';
         }
       });

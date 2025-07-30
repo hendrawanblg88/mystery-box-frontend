@@ -2,7 +2,7 @@ const apiUrl = "https://script.google.com/macros/s/AKfycbx_3SH9blPz4v-wKqtHdFm5C
 
 function cekKupon() {
   const id = document.getElementById("idInput").value.trim();
-  const kupon = document.getElementById("idInput").value.trim();
+  const kupon = document.getElementById("kuponInput").value.trim();
 
   if (!id || !kupon) {
     document.getElementById("hasil").textContent = "ID dan kupon wajib diisi!";

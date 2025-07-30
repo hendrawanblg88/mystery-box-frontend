@@ -891,6 +891,43 @@ function verifikasi() {
       menu.style.display = menu.style.display === "flex" ? "none" : "flex";
     });
 
+    <!-- Tambahkan script verifikasi di bawah -->
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycbx_3SH9blPz4v-wKqtHdFm5CWXJAagYLOHwNNl6IrvNNlCAJXNoemapHuk47Jr0RSbrzQ/exec";
+
+async function verifikasi() {
+  const id = document.getElementById("id").value.trim().toUpperCase();
+  const kupon = document.getElementById("kupon").value.trim().toUpperCase();
+
+  if (!id || !kupon) {
+    alert("Mohon isi ID dan Kupon.");
+    return;
+  }
+
+  try {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      body: JSON.stringify({ action: "checkCoupon", id, kupon }),
+      headers: { "Content-Type": "application/json" },
+    });
+    const result = await res.json();
+
+    if (result.status === "valid") {
+      localStorage.setItem("row", result.row);
+      document.getElementById("inputSection").style.display = "none";
+      document.getElementById("boxSection").style.display = "block";
+    } else if (result.status === "used") {
+      alert("Kupon sudah digunakan.");
+    } else {
+      alert("ID atau kupon tidak valid.");
+    }
+  } catch (err) {
+    alert("Gagal memverifikasi kupon.");
+    console.error(err);
+  }
+}
+</script>
+
   </script>
    <!-- Footer -->
 <div class="footer" style="text-align: center; padding: 20px 0; font-size: 14px; color: #ccc;">

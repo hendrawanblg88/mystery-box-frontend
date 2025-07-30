@@ -700,7 +700,7 @@ cekKupon("A123", "ABC999");
         return;
       }
 
-      google.script.run.withSuccessHandler(function(res) {
+      fetch().withSuccessHandler(function(res) {
         if (res.status === 'valid') {
           rowIndex = res.row;
           document.getElementById('form').style.display = 'none';
@@ -844,7 +844,7 @@ cekKupon("A123", "ABC999");
   buatPopup(hadiahTerpilih);
 
   // Simpan hasil ke GAS
-  google.script.run.simpanHasil(rowIndex, hadiahTerpilih);
+  fetch().simpanHasil(rowIndex, hadiahTerpilih);
 }
 
     function buatPopup(hadiahTerpilih) {

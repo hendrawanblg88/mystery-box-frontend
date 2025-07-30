@@ -1,4 +1,4 @@
-const apiUrl = "https://script.google.com/macros/s/AKfycbx_3SH9blPz4v-wKqtHdFm5CWXJAagYLOHwNNl6IrvNNlCAJXNoemapHuk47Jr0RSbrzQ/exec"; // ganti dengan URL Web App Anda
+const apiUrl = "https://script.google.com/macros/s/AKfycbx_3SH9blPz4v-wKqtHdFm5CWXJAagYLOHwNNl6IrvNNlCAJXNoemapHuk47Jr0RSbrzQ/exec";
 
 function cekKupon() {
   const id = document.getElementById("idInput").value.trim();
@@ -10,8 +10,9 @@ function cekKupon() {
   }
 
   const url = `${apiUrl}?id=${encodeURIComponent(id)}&kupon=${encodeURIComponent(kupon)}`;
+  const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(url);
 
-  fetch(url)
+  fetch(proxyUrl)
     .then(response => response.json())
     .then(data => {
       if (data.status === "valid") {
@@ -27,4 +28,3 @@ function cekKupon() {
       document.getElementById("hasil").textContent = "Terjadi kesalahan saat menghubungi server.";
     });
 }
-

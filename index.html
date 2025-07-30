@@ -513,11 +513,16 @@
   </div>
   
   <!-- Form Input -->
-  <div class="form-container" id="form">
+<div class="form-container" id="form">
   <div class="form-box">
     <input type="text" id="idInput" placeholder="Masukkan ID Anda" />
     <input type="text" id="kuponInput" placeholder="Masukkan Kode Kupon" />
-    <button onclick="verifikasi()">Mulai Game</button>
+    
+    <!-- Tambahkan tombol di sini -->
+    <button onclick="cekKupon()">Mulai Game</button>
+
+    <!-- Untuk menampilkan hasil -->
+    <p id="hasil"></p>
   </div>
 </div>
 

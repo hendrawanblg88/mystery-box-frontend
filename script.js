@@ -1,8 +1,8 @@
 const apiUrl = "https://script.google.com/macros/s/AKfycbx_3SH9blPz4v-wKqtHdFm5CWXJAagYLOHwNNl6IrvNNlCAJXNoemapHuk47Jr0RSbrzQ/exec";
 
 function cekKupon() {
-  const id = document.getElementById("id").value.trim();
-  const kupon = document.getElementById("kupon").value.trim();
+  const id = document.getElementById("idInput").value.trim();
+  const kupon = document.getElementById("idInput").value.trim();
 
   if (!id || !kupon) {
     document.getElementById("hasil").textContent = "ID dan kupon wajib diisi!";

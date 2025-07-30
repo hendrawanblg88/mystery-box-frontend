@@ -659,20 +659,37 @@
         return;
       }
 
-      google.script.run.withSuccessHandler(function(res) {
-        if (res.status === 'valid') {
-          rowIndex = res.row;
-          document.getElementById('form').style.display = 'none';
-          document.getElementById('boxContainer').style.display = 'grid';
-          document.getElementById('instructionBox').style.display = 'block';
-          mulaiBox();
-        } else if (res.status === 'used') {
-          alert('Kupon sudah digunakan.');
-        } else {
-          alert('ID atau kupon tidak valid.');
-        }
-      }).checkCoupon(id, kupon);
+      const GAS_URL = 'https://script.google.com/macros/s/AKfycb.../exec'; // Ganti dengan URL Web App GAS kamu
+
+function verifikasiKupon(id, kupon) {
+  fetch(GAS_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      mode: 'verifikasi',
+      id: id,
+      kupon: kupon
+    })
+  })
+  .then(res => res.json())
+  .then(res => {
+    if (res.status === 'valid') {
+      rowIndex = res.row;
+      document.getElementById('form').style.display = 'none';
+      document.getElementById('boxContainer').style.display = 'grid';
+      document.getElementById('instructionBox').style.display = 'block';
+      mulaiBox(); // fungsi kamu untuk memulai game
+    } else if (res.status === 'used') {
+      alert('Kupon sudah digunakan.');
+    } else {
+      alert('ID atau kupon tidak valid.');
     }
+  })
+  .catch(err => {
+    console.error('Terjadi kesalahan:', err);
+    alert('Gagal menghubungi server. Coba lagi nanti.');
+  });
+}
 
     function mulaiBox() {
       shuffle(hadiahList);
@@ -802,10 +819,23 @@
   // Tampilkan popup hadiah
   buatPopup(hadiahTerpilih);
 
-  // Simpan hasil ke GAS
-  google.script.run.simpanHasil(rowIndex, hadiahTerpilih);
-}
-
+  fetch(GAS_URL, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    mode: 'simpan',
+    row: rowIndex,
+    hadiah: hadiahTerpilih
+  })
+})
+.then(res => res.json())
+.then(data => {
+  if (data.success) {
+    console.log('Hadiah berhasil disimpan');
+  } else {
+    console.error('Gagal menyimpan:', data.error || data);
+  }
+  
     function buatPopup(hadiahTerpilih) {
       const popup = document.getElementById('popupOverlay');
       const tbody = document.querySelector('#hadiahTable tbody');

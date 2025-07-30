@@ -577,46 +577,6 @@
   });
 </script>
 
-  <script>
-  const inputId = document.getElementById("idMember");
-  const inputKupon = document.getElementById("kupon");
-  const mulaiBtn = document.getElementById("mulaiGameBtn");
-  const hadiahBtn = document.getElementById("tampilkanHadiahBtn");
-
-  let rowIndex = null;
-  let sudahPilih = false;
-
-  mulaiBtn.addEventListener("click", () => {
-    const id = inputId.value.trim();
-    const kupon = inputKupon.value.trim();
-
-    if (!id || !kupon) {
-      alert("Silakan isi ID dan Kupon terlebih dahulu");
-      return;
-    }
-
-    fetch(`https://script.google.com/macros/s/AKfycbyfWnx4Kv_X6LiUEt5E7ZTzVyliAuRKGulMDruPFq7WH70tbfJMvji8_r-QRWMQK1GJ/exec?id=${id}&kupon=${kupon}`)
-      .then(response => response.json())
-      .then(result => {
-        if (result.status === "valid") {
-          rowIndex = result.row;
-          sudahPilih = false;
-          hadiahBtn.style.display = "inline-block"; // tombol tampilkan hadiah muncul
-          alert("Kupon valid. Silakan pilih hadiah!");
-        } else if (result.status === "used") {
-          alert("Kupon sudah digunakan!");
-        } else {
-          alert("ID atau kupon tidak cocok.");
-        }
-      })
-      .catch(error => {
-        console.error("Error:", error);
-        alert("Gagal menghubungi server.");
-      });
-  });
-</script>
-
-
   <!-- Kotak tulisan "KLIK UNTUK DIBUKA" satu kotak di tengah -->
   <div id="instructionBox" style="display:none;">
     KLIK UNTUK DIBUKA

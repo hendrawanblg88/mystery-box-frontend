@@ -657,22 +657,6 @@
       if (!id || !kupon) {
         alert("Masukkan ID dan Kupon!");
         return;
-      }
-
-      const form = document.getElementById("form");
-  const inputId = document.getElementById("id");
-  const inputKupon = document.getElementById("kupon");
-  const formBox = document.getElementById("form-box");
-  const hadiahText = document.getElementById("hadiah-text");
-
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-    const id = inputId.value.trim();
-    const kupon = inputKupon.value.trim();
-
-    if (!id || !kupon) {
-      alert("Mohon isi ID dan kupon.");
-      return;
     }
 
     fetch("https://script.google.com/macros/s/AKfycbx_3SH9blPz4v-wKqtHdFm5CWXJAagYLOHwNNl6IrvNNlCAJXNoemapHuk47Jr0RSbrzQ/exec", {

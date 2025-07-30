@@ -6,44 +6,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
   form.addEventListener("submit", async function (e) {
     e.preventDefault();
-    hasilDiv.innerHTML = "⏳ Memproses...";
+    hasilDiv.textContent = "⏳ Memproses...";
 
     const id = document.getElementById("idInput").value.trim();
     const kupon = document.getElementById("kuponInput").value.trim();
 
     if (!id || !kupon) {
-      hasilDiv.innerHTML = "❗ ID dan Kupon harus diisi.";
+      hasilDiv.textContent = "❗ ID dan Kupon harus diisi.";
       return;
     }
 
     try {
-      const res = await fetch(API_URL, {
-        method: "POST",
-        body: new URLSearchParams({
-          action: "check",
-          id,
-          kupon
-        })
-      });
+      const res = await fetch(`${API_URL}?id=${encodeURIComponent(id)}&kupon=${encodeURIComponent(kupon)}`);
+      
+      if (!res.ok) throw new Error("HTTP Error " + res.status);
 
       const result = await res.json();
 
       if (result.status === "valid") {
-        // Simpan baris ke variabel JS global, biar bisa dipakai saat hadiah diklik
         window.rowIndex = result.row;
-        hasilDiv.innerHTML = "✅ Kupon valid. Silakan pilih hadiah!";
         window.sudahPilih = false;
+        hasilDiv.textContent = "✅ Kupon valid. Silakan pilih hadiah!";
       } else if (result.status === "used") {
-        hasilDiv.innerHTML = "⚠️ Kupon ini sudah digunakan.";
+        hasilDiv.textContent = "⚠️ Kupon ini sudah digunakan.";
       } else if (result.status === "invalid") {
-        hasilDiv.innerHTML = "❌ ID atau Kupon tidak ditemukan.";
+        hasilDiv.textContent = "❌ ID atau Kupon tidak ditemukan.";
       } else {
-        hasilDiv.innerHTML = "❗ Terjadi kesalahan tak terduga.";
+        hasilDiv.textContent = "❗ Terjadi kesalahan tak terduga.";
       }
 
     } catch (error) {
-      console.error(error);
-      hasilDiv.innerHTML = "🚨 Gagal menghubungi server.";
+      console.error("Fetch error:", error);
+      hasilDiv.textContent = "🚨 Gagal menghubungi server.";
     }
   });
 });

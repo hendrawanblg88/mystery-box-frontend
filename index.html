@@ -698,25 +698,6 @@
         boxContainer.appendChild(div);
       }
     }
-    <script>
-document.getElementById('kuponForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const id = document.getElementById('id').value.trim();
-  const kupon = document.getElementById('kupon').value.trim();
-
-  const result = await validateCoupon(id, kupon);
-  console.log(result);
-
-  if (result.status === 'valid') {
-    alert('Kupon valid! Memproses hadiah...');
-    await saveResult(result.row, 'Hadiah Misteri 🎁');
-  } else if (result.status === 'used') {
-    alert('Kupon sudah digunakan.');
-  } else {
-    alert('Kupon tidak valid.');
-  }
-});
-</script>
 
     // Efek bintang
     const canvas = document.getElementById('starCanvas');
@@ -883,38 +864,6 @@ document.getElementById('kuponForm').addEventListener('submit', async (e) => {
       const menu = document.getElementById("floatingMenu");
       menu.style.display = menu.style.display === "flex" ? "none" : "flex";
     });
-
-    const API_URL = 'https://script.google.com/macros/s/AKfycbwxVzVCd0qKGNEO-_iJup_EWRLvouBcn8kdxPnQHqYUC1I68FQHt-VBjkesg7T2ZIvqiQ/exec';
-
-async function validateCoupon(id, kupon) {
-  const response = await fetch(API_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      action: 'checkCoupon',
-      id: id,
-      kupon: kupon
-    })
-  });
-  return await response.json();
-}
-
-async function saveResult(row, hadiah) {
-  const response = await fetch(API_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      action: 'simpanHasil',
-      row: row,
-      hadiah: hadiah
-    })
-  });
-  return await response.json();
-}
 
   </script>
    <!-- Footer -->

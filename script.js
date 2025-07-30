@@ -1,4 +1,4 @@
-const apiUrl = "https://script.google.com/macros/s/AKfycbx_3SH9blPz4v/exec"; // ganti dengan URL Web App Anda
+const apiUrl = "https://script.google.com/macros/s/AKfycbx_3SH9blPz4v-wKqtHdFm5CWXJAagYLOHwNNl6IrvNNlCAJXNoemapHuk47Jr0RSbrzQ/exec"; // ganti dengan URL Web App Anda
 
 function cekKupon() {
   const id = document.getElementById("idInput").value.trim();

@@ -866,6 +866,35 @@
     });
 
   </script>
+  <script>
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbx_3SH9blPz4v-wKqtHdFm5CWXJAagYLOHwNNl6IrvNNlCAJXNoemapHuk47Jr0RSbrzQ/exec';
+
+    document.getElementById('btnCek').addEventListener('click', () => {
+      const id = document.getElementById('inputId').value;
+      const kupon = document.getElementById('inputKupon').value;
+
+      fetch(GAS_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          mode: 'verifikasi',
+          id: id,
+          kupon: kupon
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        const hasilDiv = document.getElementById('hasil');
+        if (data.status === 'valid') {
+          hasilDiv.innerText = 'Kupon valid! Silakan lanjut buka box.';
+        } else if (data.status === 'used') {
+          hasilDiv.innerText = 'Kupon sudah digunakan.';
+        } else {
+          hasilDiv.innerText = 'ID atau kupon tidak valid.';
+        }
+      });
+    });
+  </script>
    <!-- Footer -->
 <div class="footer" style="text-align: center; padding: 20px 0; font-size: 14px; color: #ccc;">
   © <span id="year"></span> BELEGENDWIN. Semua hak dilindungi.

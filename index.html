@@ -651,36 +651,42 @@
 
     const clickSound = document.getElementById('clickSound');
 
-    function verifikasi() {
-      const id = document.getElementById('id').value.trim();
-      const kupon = document.getElementById('kupon').value.trim();
-      if (!id || !kupon) {
-        alert("Masukkan ID dan Kupon!");
-        return;
-    }
+    async function verifikasi() {
+  const id = document.getElementById('id').value.trim();
+  const kupon = document.getElementById('kupon').value.trim();
+  if (!id || !kupon) {
+    alert("Masukkan ID dan Kupon!");
+    return;
+  }
 
-    fetch("https://script.google.com/macros/s/AKfycbx_3SH9blPz4v-wKqtHdFm5CWXJAagYLOHwNNl6IrvNNlCAJXNoemapHuk47Jr0RSbrzQ/exec", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({ id, kupon })
-})
-  .then(response => response.json())
-  .then(res => {
-    if (res.success) {
+  try {
+    const response = await fetch('https://script.google.com/macros/s/AKfycbx_3SH9blPz4v-wKqtHdFm5CWXJAagYLOHwNNl6IrvNNlCAJXNoemapHuk47Jr0RSbrzQ/exec', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'check',
+        id: id,
+        kupon: kupon
+      })
+    });
+    const res = await response.json();
+
+    if (res.status === 'valid') {
+      rowIndex = res.row;
       document.getElementById('form').style.display = 'none';
       document.getElementById('boxContainer').style.display = 'grid';
       document.getElementById('instructionBox').style.display = 'block';
-      mulaiBox(); // animasi buka box
+      mulaiBox();
+    } else if (res.status === 'used') {
+      alert('Kupon sudah digunakan.');
     } else {
-      alert(res.message || "ID atau kupon tidak valid.");
+      alert('ID atau kupon tidak valid.');
     }
-  })
-  .catch(err => {
-    console.error("Fetch error:", err);
-    alert("Gagal menghubungi server.");
-    }
+  } catch (err) {
+    console.error(err);
+    alert('Gagal menghubungi server.');
+  }
+}
 
     function mulaiBox() {
       shuffle(hadiahList);
@@ -797,21 +803,25 @@
     draw();
 
     function bukaKotak(box) {
-  // Dapatkan daftar hadiah di bawah 10000
   const hadiahBawah10000 = hadiahList.filter(h => h < 10000);
-  
-  // Pilih hadiah random dari hadiah bawah 10000
   const hadiahTerpilih = hadiahBawah10000[Math.floor(Math.random() * hadiahBawah10000.length)];
 
   box.classList.add('selected');
   box.textContent = `Rp ${hadiahTerpilih.toLocaleString()}`;
   box.style.borderColor = '#ffd700';
 
-  // Tampilkan popup hadiah
   buatPopup(hadiahTerpilih);
 
   // Simpan hasil ke GAS
-  google.script.run.simpanHasil(rowIndex, hadiahTerpilih);
+  fetch('https://script.google.com/macros/s/AKfycbx_3SH9blPz4v-wKqtHdFm5CWXJAagYLOHwNNl6IrvNNlCAJXNoemapHuk47Jr0RSbrzQ/exec', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      action: 'simpan',
+      row: rowIndex,
+      hadiah: hadiahTerpilih
+    })
+  });
 }
 
     function buatPopup(hadiahTerpilih) {

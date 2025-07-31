@@ -652,33 +652,28 @@
     const clickSound = document.getElementById('clickSound');
 
     function verifikasi() {
-  const id = document.getElementById('id').value.trim();
-  const kupon = document.getElementById('kupon').value.trim();
-  if (!id || !kupon) {
-    alert("Masukkan ID dan Kupon!");
-    return;
-  }
-
-  fetch(`https://script.google.com/macros/s/AKfycbx_3SH9blPz4v-wKqtHdFm5CWXJAagYLOHwNNl6IrvNNlCAJXNoemapHuk47Jr0RSbrzQ/exec?aksi=checkCoupon&id=${encodeURIComponent(id)}&kupon=${encodeURIComponent(kupon)}`)
-    .then(res => res.json())
-    .then(res => {
-      if (res.status === 'valid') {
-        rowIndex = res.row;
-        document.getElementById('form').style.display = 'none';
-        document.getElementById('boxContainer').style.display = 'grid';
-        document.getElementById('instructionBox').style.display = 'block';
-        mulaiBox();
-      } else if (res.status === 'used') {
-        alert('Kupon sudah digunakan.');
-      } else {
-        alert('ID atau kupon tidak valid.');
+      const id = document.getElementById('id').value.trim();
+      const kupon = document.getElementById('kupon').value.trim();
+      if (!id || !kupon) {
+        alert("Masukkan ID dan Kupon!");
+        return;
       }
-    })
-    .catch(err => {
-      console.error('Gagal verifikasi:', err);
-      alert('Terjadi kesalahan, coba lagi nanti.');
-    });
-}
+
+      google.script.run.withSuccessHandler(function(res) {
+        if (res.status === 'valid') {
+          rowIndex = res.row;
+          document.getElementById('form').style.display = 'none';
+          document.getElementById('boxContainer').style.display = 'grid';
+          document.getElementById('instructionBox').style.display = 'block';
+          mulaiBox();
+        } else if (res.status === 'used') {
+          alert('Kupon sudah digunakan.');
+        } else {
+          alert('ID atau kupon tidak valid.');
+        }
+      }).checkCoupon(id, kupon);
+    }
+
     function mulaiBox() {
       shuffle(hadiahList);
       const boxContainer = document.getElementById('boxContainer');
@@ -807,14 +802,9 @@
   // Tampilkan popup hadiah
   buatPopup(hadiahTerpilih);
 
-  fetch(`https://script.google.com/macros/s/AKfycbx_3SH9blPz4v-wKqtHdFm5CWXJAagYLOHwNNl6IrvNNlCAJXNoemapHuk47Jr0RSbrzQ/exec?aksi=simpanHasil&row=${rowIndex}&hadiah=${hadiahTerpilih}`)
-  .then(res => res.json())
-  .then(data => {
-    console.log('Hasil berhasil disimpan:', data);
-  })
-  .catch(err => {
-    console.error('Gagal simpan hasil:', err);
-  });
+  // Simpan hasil ke GAS
+  google.script.run.simpanHasil(rowIndex, hadiahTerpilih);
+}
 
     function buatPopup(hadiahTerpilih) {
       const popup = document.getElementById('popupOverlay');

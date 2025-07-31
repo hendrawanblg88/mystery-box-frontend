@@ -652,27 +652,41 @@
     const clickSound = document.getElementById('clickSound');
 
     function verifikasi() {
-      const id = document.getElementById('id').value.trim();
-      const kupon = document.getElementById('kupon').value.trim();
-      if (!id || !kupon) {
-        alert("Masukkan ID dan Kupon!");
-        return;
-      }
+  const id = document.getElementById('id').value.trim();
+  const kupon = document.getElementById('kupon').value.trim();
+  if (!id || !kupon) {
+    alert("Masukkan ID dan Kupon!");
+    return;
+  }
 
-      google.script.run.withSuccessHandler(function(res) {
-        if (res.status === 'valid') {
-          rowIndex = res.row;
-          document.getElementById('form').style.display = 'none';
-          document.getElementById('boxContainer').style.display = 'grid';
-          document.getElementById('instructionBox').style.display = 'block';
-          mulaiBox();
-        } else if (res.status === 'used') {
-          alert('Kupon sudah digunakan.');
-        } else {
-          alert('ID atau kupon tidak valid.');
-        }
-      }).checkCoupon(id, kupon);
+  fetch(GAS_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      action: 'checkCoupon',
+      id: id,
+      kupon: kupon
+    })
+  })
+  .then(response => response.json())
+  .then(res => {
+    if (res.status === 'valid') {
+      rowIndex = res.row;
+      document.getElementById('form').style.display = 'none';
+      document.getElementById('boxContainer').style.display = 'grid';
+      document.getElementById('instructionBox').style.display = 'block';
+      mulaiBox();
+    } else if (res.status === 'used') {
+      alert('Kupon sudah digunakan.');
+    } else {
+      alert('ID atau kupon tidak valid.');
     }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert('Terjadi kesalahan. Silakan coba lagi.');
+  });
+}
 
     function mulaiBox() {
       shuffle(hadiahList);
@@ -803,7 +817,23 @@
   buatPopup(hadiahTerpilih);
 
   // Simpan hasil ke GAS
-  google.script.run.simpanHasil(rowIndex, hadiahTerpilih);
+  function simpanHadiah(rowIndex, hadiahTerpilih) {
+  fetch(GAS_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      action: 'simpanHasil',
+      row: rowIndex,
+      hadiah: hadiahTerpilih
+    })
+  })
+  .then(res => res.json())
+  .then(response => {
+    console.log('Hasil tersimpan:', response);
+  })
+  .catch(error => {
+    console.error('Gagal menyimpan hasil:', error);
+  });
 }
 
     function buatPopup(hadiahTerpilih) {
@@ -865,8 +895,8 @@
       menu.style.display = menu.style.display === "flex" ? "none" : "flex";
     });
 
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbx_3SH9blPz4v-wKqtHdFm5CWXJAagYLOHwNNl6IrvNNlCAJXNoemapHuk47Jr0RSbrzQ/exec
-'; // Ganti URL GAS kamu
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbx_3SH9blPz4v-wKqtHdFm5CWXJAagYLOHwNNl6IrvNNlCAJXNoemapHuk47Jr0RSbrzQ/exec';
+let rowIndex = null;  // Tambahkan ini jika belum
 
 async function cekKupon(id, kupon) {
   const response = await fetch(GAS_URL, {

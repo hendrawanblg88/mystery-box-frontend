@@ -676,7 +676,19 @@
         return;
       }
 
-      google.script.run.withSuccessHandler(function(res) {
+      fetch(webAppUrl, {
+      method: 'POST',
+      body: JSON.stringify({
+      action: 'checkCoupon',
+      id: id,
+      kupon: kupon
+      }),
+      headers: {
+      'Content-Type': 'application/json'
+     }
+  })
+  .then(res => res.json())
+  .then(res => {
         if (res.status === 'valid') {
           rowIndex = res.row;
           document.getElementById('form').style.display = 'none';
@@ -819,9 +831,25 @@
   // Tampilkan popup hadiah
   buatPopup(hadiahTerpilih);
 
-  // Simpan hasil ke GAS
-  google.script.run.simpanHasil(rowIndex, hadiahTerpilih);
-}
+  // Kirim ke GAS
+fetch(webAppUrl, {
+  method: 'POST',
+  body: JSON.stringify({
+    action: 'simpanHasil',
+    row: rowIndex,
+    hadiah: hadiahTerpilih
+  }),
+  headers: {
+    'Content-Type': 'application/json'
+  }
+})
+.then(res => res.json())
+.then(data => {
+  console.log("Data tersimpan:", data);
+})
+.catch(err => {
+  console.error("Gagal simpan hasil:", err);
+});
 
     function buatPopup(hadiahTerpilih) {
       const popup = document.getElementById('popupOverlay');

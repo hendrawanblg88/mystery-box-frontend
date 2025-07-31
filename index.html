@@ -511,12 +511,12 @@
     </div>
   </div>
   
-  <!-- Form Input -->
-  <div class="form-container" id="form">
+<!-- Form Input -->
+<div class="form-container" id="form">
   <div class="form-box">
     <input type="text" id="id" placeholder="Masukkan ID Anda" />
     <input type="text" id="kupon" placeholder="Masukkan Kode Kupon" />
-    <button onclick="verifikasi()">Mulai Game</button>
+    <button id="btnStart">Mulai Game</button> <!-- Ganti onclick -->
   </div>
 </div>
 
@@ -658,6 +658,13 @@
     alert("Masukkan ID dan Kupon!");
     return;
   }
+      // Tambahkan event listener agar tombol bisa bekerja
+document.addEventListener('DOMContentLoaded', () => {
+  const btnStart = document.getElementById('btnStart');
+  if (btnStart) {
+    btnStart.addEventListener('click', verifikasi);
+  }
+});
 
   fetch(GAS_URL, {
     method: 'POST',
@@ -938,15 +945,17 @@ async function simpanHadiah(row, hadiah) {
   }
 }
 
-async function verifikasi() {
+function verifikasi() {
   const id = document.getElementById('id').value.trim();
   const kupon = document.getElementById('kupon').value.trim();
 
   if (!id || !kupon) {
-    alert("Masukkan ID dan Kupon!");
+    alert('Mohon isi ID dan Kupon');
     return;
   }
 
+  cekKupon(id, kupon);
+}
   try {
     const response = await fetch(GAS_URL, {
       method: 'POST',

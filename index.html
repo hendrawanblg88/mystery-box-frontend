@@ -651,46 +651,26 @@
 
     const clickSound = document.getElementById('clickSound');
 
-    const API_URL = "https://script.google.com/macros/s/AKfycbx_3SH9blPz4v-wKqtHdFm5CWXJAagYLOHwNNl6IrvNNlCAJXNoemapHuk47Jr0RSbrzQ/exec";
-
-function verifikasi() {
-  const id = document.getElementById("id").value.trim();
-  const kupon = document.getElementById("kupon").value.trim();
-
-  if (!id || !kupon) {
-    alert("Masukkan ID dan Kupon!");
-    return;
-  }
-
-  fetch(API_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      action: "cek",
-      id: id,
-      kupon: kupon
-    }),
-  })
-    .then((res) => res.json())
-    .then((res) => {
-      if (res.status === "valid") {
-        rowIndex = res.row;
-        document.getElementById("form").style.display = "none";
-        document.getElementById("boxContainer").style.display = "grid";
-        document.getElementById("instructionBox").style.display = "block";
-        mulaiBox();
-      } else if (res.status === "used") {
-        alert("Kupon sudah digunakan.");
-      } else {
-        alert("ID atau kupon tidak valid.");
+    function verifikasi() {
+      const id = document.getElementById('id').value.trim();
+      const kupon = document.getElementById('kupon').value.trim();
+      if (!id || !kupon) {
+        alert("Masukkan ID dan Kupon!");
+        return;
       }
-    })
-    .catch((err) => {
-      console.error("Error:", err);
-      alert("Terjadi kesalahan koneksi.");
-    });
-}
 
+      google.script.run.withSuccessHandler(function(res) {
+        if (res.status === 'valid') {
+          rowIndex = res.row;
+          document.getElementById('form').style.display = 'none';
+          document.getElementById('boxContainer').style.display = 'grid';
+          document.getElementById('instructionBox').style.display = 'block';
+          mulaiBox();
+        } else if (res.status === 'used') {
+          alert('Kupon sudah digunakan.');
+        } else {
+          alert('ID atau kupon tidak valid.');
+        }
       }).checkCoupon(id, kupon);
     }
 

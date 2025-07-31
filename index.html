@@ -865,6 +865,70 @@
       menu.style.display = menu.style.display === "flex" ? "none" : "flex";
     });
 
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbx_3SH9blPz4v-wKqtHdFm5CWXJAagYLOHwNNl6IrvNNlCAJXNoemapHuk47Jr0RSbrzQ/exec
+'; // Ganti URL GAS kamu
+
+async function cekKupon(id, kupon) {
+  const response = await fetch(GAS_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      action: 'checkCoupon',
+      id: id,
+      kupon: kupon
+    })
+  });
+  const data = await response.json();
+
+  if (data.status === 'valid') {
+    bukaMysteryBox(data.row);
+  } else if (data.status === 'used') {
+    alert('Kupon sudah digunakan');
+  } else {
+    alert('Kupon tidak valid');
+  }
+}
+
+async function simpanHadiah(row, hadiah) {
+  const response = await fetch(GAS_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      action: 'simpanHasil',
+      row: row,
+      hadiah: hadiah
+    })
+  });
+  const data = await response.json();
+
+  if (data.status === 'ok') {
+    alert('Hadiah disimpan!');
+  } else {
+    alert('Gagal menyimpan hadiah: ' + data.message);
+  }
+}
+
+// INI yang dipanggil tombol
+function verifikasi() {
+  const id = document.getElementById('id').value.trim();
+  const kupon = document.getElementById('kupon').value.trim();
+
+  if (!id || !kupon) {
+    alert('Mohon isi ID dan Kupon');
+    return;
+  }
+
+  cekKupon(id, kupon);
+}
+
+function bukaMysteryBox(row) {
+  const hadiah = ['Voucher 10K', 'Tiket Emas', 'Tumbler', 'Tidak Ada Hadiah'][
+    Math.floor(Math.random() * 4)
+  ];
+  alert('Selamat! Anda mendapat: ' + hadiah);
+  simpanHadiah(row, hadiah);
+}
+
   </script>
    <!-- Footer -->
 <div class="footer" style="text-align: center; padding: 20px 0; font-size: 14px; color: #ccc;">

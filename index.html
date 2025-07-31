@@ -661,7 +661,7 @@
 
   fetch(GAS_URL, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify({
       action: 'checkCoupon',
       id: id,
@@ -922,7 +922,7 @@ async function cekKupon(id, kupon) {
 async function simpanHadiah(row, hadiah) {
   const response = await fetch(GAS_URL, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify({
       action: 'simpanHasil',
       row: row,

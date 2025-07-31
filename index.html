@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,17 +9,25 @@
 <body>
   <div class="container">
     <h1>Mystery Box - BELEGENDWIN</h1>
-    <p>Masukkan kode kuponmu untuk memutar kotak misteri dan menangkan hadiah menarik!</p>
+    <p>Masukkan ID dan kode kuponmu untuk memutar kotak misteri dan menangkan hadiah menarik!</p>
+
+    <!-- Input ID dan Kupon -->
+    <input type="text" id="userId" placeholder="Masukkan ID Anda">
     <input type="text" id="couponInput" placeholder="Masukkan Kode Kupon">
     <button id="startButton" onclick="checkCoupon()">Mulai Permainan</button>
+
+    <!-- Kotak Hadiah -->
     <div class="box-container">
       <div class="box" onclick="openBox(this)">🎁</div>
       <div class="box" onclick="openBox(this)">🎁</div>
       <div class="box" onclick="openBox(this)">🎁</div>
     </div>
+
+    <!-- Hasil & Hadiah -->
     <div id="result"></div>
     <div id="prize"></div>
   </div>
+
   <script src="assets/script.js"></script>
 </body>
 </html>
